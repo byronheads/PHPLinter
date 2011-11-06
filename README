@@ -58,6 +58,15 @@ Ruleset (some rules are not active)
     * C9: Empty comment
     * C10: Too many classes defined in file. Default(1)
     * C11: Property defined in method
+    
+(F)ormatting
+
+	* F1: Spaces mixed with tabs
+	* F2: Inconsistant indentation
+	* F3: Operator not preceded by a space
+	* F4: Operator not followed by a space
+	* F5: Comma not followed by a space
+	* F6: Multiple statements on single line
 
 (D)ocumentation
 
