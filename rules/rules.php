@@ -50,6 +50,10 @@ return array(
 		'message' => 'WTF found in comment',
 		'flag' => 'I6',
 	),
+	'INF_FOUND_HASHBANG' => array(
+		'message_extra' => 'Script contains hashbang: `%s`',
+		'flag' => 'I7',
+	),
 	/*
 	 *	Conventions 
 	 */

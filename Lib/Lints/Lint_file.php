@@ -136,9 +136,17 @@ class Lint_file extends BaseLint implements ILint {
 		if($pos > 0) {
 			$k = $this->find(-1, T_INLINE_HTML, $pos);
 			if($k !== false)
-				$this->report('REF_HTML_BEFORE_OPEN', null, $o[$k][2]);
-			else
+			{
+				// check for #!
+				if($o[$k][2] === 1 && strpos($o[$k][1], "#!") === 0)
+				{
+					$this->report('INF_FOUND_HASHBANG', $o[$k][1], $o[$k][2]);
+				} else {
+					$this->report('REF_HTML_BEFORE_OPEN', null, $o[$k][2]);
+				}
+			} else {
 				$this->report('WAR_WS_BEFORE_OPEN', null, $o[$pos-1][2]);
+			}
 		}
 	}	
 	/**
