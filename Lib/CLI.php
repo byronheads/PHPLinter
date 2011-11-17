@@ -44,6 +44,8 @@ class CLI {
 	protected $stats;
 	/* @var String */
 	protected $settings_file;
+	/* @var String */
+	protected $source_view_url;
 	/**
 	----------------------------------------------------------------------+
 	* @desc 	__construct. Defaults to use color.
@@ -61,7 +63,7 @@ class CLI {
 	*/
 	protected function help() {
 		echo "PHPLinter. Lint and score PHP files.\n";
-		echo "Usage phplinter -[ICWRESHMUvVTwc] -i[PATTERN] -e[PATTERN] -o[directory] [file|directory]\n";
+		echo "Usage phplinter -[ICWRESHMUvVTwc] -i[PATTERN] -e[PATTERN] -o[directory] -L[Source View URL] [file|directory]\n";
 		echo "\t-U: Use rules-file FILE.\n";
 		echo "\t-I: Report extra information (default off).\n";
 		echo "\t-C: Dont report conventions.\n";
@@ -87,6 +89,7 @@ class CLI {
 		echo "\t-H: HTML report.\n";
 		echo "\t-w: Overwrite output directory. (Warning: Will empty directory)\n";
 		echo "\t-i: ignore PATTERN. (Ignore files in directory mode)\n";
+		echo "\t-L: Create links to source view from URL (##FILE##, ##LINE##)(with -H)\n";
 		echo "<jtm@robot.is>\n";
 		exit;
 	}
@@ -182,6 +185,9 @@ class CLI {
 							continue 3;
 						case 'U':
 							$this->settings_file = $this->consume($argv, $i);
+							continue 3;
+						case 'L':
+							$this->source_view_url = $this->consume($argv, $i);
 							continue 3;
 						case 'e':
 							$ext = $this->consume($argv, $i);
@@ -279,7 +285,7 @@ class CLI {
 			$this->stats[] = $stats;
 		}
 		if($this->options & OPT_HTML_REPORT) {
-			$this->reporter->toHtml($this->target, $reports, $penaltys);
+			$this->reporter->toHtml($this->target, $reports, $penaltys, $this->source_view_url);
 		}
 		$cnt = count($this->stats);
 		$this->msg("$cnt files, ", 0);	

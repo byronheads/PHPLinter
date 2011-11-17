@@ -126,7 +126,7 @@ class Report {
 	* @param	$penaltys	Array
 	----------------------------------------------------------------------+
 	*/
-	public function toHtml($root, $report, $penaltys) {
+	public function toHtml($root, $report, $penaltys, $source_view_url) {
 		$this->root = realpath($root);
 		if(file_exists($this->output_dir)) {
 			$output_dir = realpath($this->output_dir);
@@ -153,7 +153,17 @@ class Report {
 				$content .= '<td align="center" class="fl_';
 				$content .= $_['flag'][0].'">'.$_['flag'].'</td>';
 				$content .= '<td class="message">'.$_['message'].'</td>';
-				$content .= "<td class=\"where\">'`{$_['where']}` Line: {$_['line']}</td>\n";
+				// Check for source view url
+				if(empty($source_view_url))
+				{
+					$content .= "<td class=\"where\">{$_['where']} Line: {$_['line']}</td>\n";
+				} else {
+					$link = str_replace('##FILE##', str_replace($root, "", $file), 
+						$source_view_url);
+					$link = str_replace('##LINE##', $_['line'], $link); 
+					$content .= "<td class=\"where\"><a href=\"$link\">";
+					$content .= "{$_['where']} Line: {$_['line']}</a></td>\n";
+				}
 				$content .= '</tr>';
 			}
 			$out .= '<tr>';
